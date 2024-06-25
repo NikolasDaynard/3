@@ -10,7 +10,9 @@ function containsOperand(line)
 end
 
 function encode(line, lineNum)
-    line = promptUser(line, lineNum)
+    if line ~= "" then
+        line = promptUser(line, lineNum)
+    end
 
     return line
 end

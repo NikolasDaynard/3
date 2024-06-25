@@ -1,0 +1,11 @@
+set:number:5
+
+set:factorial:1
+
+set:label:6
+mul:factorial:number
+sub:number:1
+nif:number:0
+goto:label
+
+print:factorial

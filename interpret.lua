@@ -42,32 +42,56 @@ function interpret(bytecode, startingLine)
             elseif string.sub(bytecode[i], 1, 3) == "add" then
                 parts = splitString(bytecode[i], ":")
                 if vars[parts[2]] ~= nil then
-                    vars[parts[2]] = vars[parts[2]] + parts[3]
+                    vars[parts[2]] = vars[parts[2]] + (tonumber(vars[parts[3]]) or parts[3])
+                else    
+                    print("operand 1 not var weweoeooeo muy no bueno")
+                end
+            elseif string.sub(bytecode[i], 1, 3) == "sub" then
+                parts = splitString(bytecode[i], ":")
+                if vars[parts[2]] ~= nil then
+                    vars[parts[2]] = vars[parts[2]] - (tonumber(vars[parts[3]]) or parts[3])
+                else    
+                    print("operand 1 not var weweoeooeo muy no bueno")
+                end
+            elseif string.sub(bytecode[i], 1, 3) == "div" then
+                parts = splitString(bytecode[i], ":")
+                if vars[parts[2]] ~= nil then
+                    vars[parts[2]] = vars[parts[2]] / (tonumber(vars[parts[3]]) or parts[3])
+                else    
+                    print("operand 1 not var weweoeooeo muy no bueno")
+                end
+            elseif string.sub(bytecode[i], 1, 3) == "mul" then
+                parts = splitString(bytecode[i], ":")
+                if vars[parts[2]] ~= nil then
+                    vars[parts[2]] = vars[parts[2]] * (tonumber(vars[parts[3]]) or parts[3])
                 else    
                     print("operand 1 not var weweoeooeo muy no bueno")
                 end
             elseif string.sub(bytecode[i], 1, 2) == "if" then
                 parts = splitString(bytecode[i], ":")
                 if vars[parts[2]] ~= nil then
-                    readNextLine = vars[parts[2]] == parts[3]
+                    if vars[parts[3]] ~= nil then
+                        readNextLine = ((tonumber(vars[parts[2]]) or vars[parts[2]]) == (tonumber(vars[parts[3]]) or vars[parts[3]]))
+                    else
+                        readNextLine = ((tonumber(vars[parts[2]]) or vars[parts[2]]) == (tonumber(parts[3]) or parts[3]))
+                    end
                 else    
                     print("operand 1 not var weweoeooeo muy no bueno")
                 end
             elseif string.sub(bytecode[i], 1, 3) == "nif" then
                 parts = splitString(bytecode[i], ":")
-                print("notif")
-                print(vars[parts[2]])
-                print(tonumber(parts[3]) or parts[3])
                 if vars[parts[2]] ~= nil then
-                    readNextLine = not (vars[parts[2]] == (tonumber(parts[3]) or parts[3]))
-                    if readNextLine then
-                        print("contine")
+                    if vars[parts[3]] ~= nil then
+                        readNextLine = not ((tonumber(vars[parts[2]]) or vars[parts[2]]) == (tonumber(vars[parts[3]]) or vars[parts[3]]))
                     else
-                        print("sad")
+                        readNextLine = not ((tonumber(vars[parts[2]]) or vars[parts[2]]) == (tonumber(parts[3]) or parts[3]))
                     end
                 else    
                     print("operand 1 not var weweoeooeo muy no bueno")
                 end
+            elseif string.sub(bytecode[i], 1, 3) == "lua" then
+                parts = splitString(bytecode[i], ":")
+                executeLuaCode(parts[2])
             end
         else
             readNextLine = true

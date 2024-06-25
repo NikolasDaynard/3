@@ -12,3 +12,17 @@ for line in io.lines(file) do
 end
 return lines
 end
+
+function executeLuaCode(code)
+  local chunk, err = load(code)
+  if chunk then
+      local success, result = pcall(chunk)
+      if success then
+          return result
+      else
+          return nil, "Execution error: " .. result
+      end
+  else
+      return nil, "Compilation error: " .. err
+  end
+end

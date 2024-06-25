@@ -10,13 +10,17 @@ end
 local file = arg[1]
 local lines = lines_from(file)
 local bytecode = {}
-  
-for k,line in pairs(lines) do
-    table.insert(bytecode, encode(line, k))
-end
 
-for i = 1, #bytecode do
-    print(bytecode[i])
-end
+if string.find(arg[1], ".byte") then
+    interpret(lines, 1)
+else
+    for k,line in pairs(lines) do
+        table.insert(bytecode, encode(line, k))
+    end
 
-interpret(bytecode, 1)
+    for i = 1, #bytecode do
+        print(bytecode[i])
+    end
+
+    interpret(bytecode, 1)
+end
