@@ -1,4 +1,5 @@
 vars = {}
+labels = {}
 
 function splitString(inputstr, sep)
     if sep == nil then
@@ -18,20 +19,58 @@ function splitString(inputstr, sep)
     return t
 end
 
-function interpret(bytecode)
-    for i = 1, #bytecode do
-        if string.sub(bytecode[i], 1, 3) == "set" then
-            parts = splitString(bytecode[i], ":")
-            vars[parts[2]] = parts[3]
-            -- print("setting, " .. parts[2])
-            -- print("to, " .. parts[3])
-        elseif string.sub(bytecode[i], 1, 5) == "print" then
-            parts = splitString(bytecode[i], ":")
-            if vars[parts[2]] ~= nil then
+function interpret(bytecode, startingLine)
+    readNextLine = true
+    for i = startingLine, #bytecode do
+        if readNextLine then
+            if string.sub(bytecode[i], 1, 3) == "set" then
+                parts = splitString(bytecode[i], ":")
+                vars[parts[2]] = parts[3]
+            elseif string.sub(bytecode[i], 1, 5) == "print" then
+                parts = splitString(bytecode[i], ":")
+                if vars[parts[2]] ~= nil then
+                    print(vars[parts[2]])
+                else
+                    print(parts[2])
+                end
+            elseif string.sub(bytecode[i], 1, 4) == "goto" then
+                parts = splitString(bytecode[i], ":")
+                if vars[parts[2]] ~= nil then
+                    interpret(bytecode, vars[parts[2]])
+                    return
+                end
+            elseif string.sub(bytecode[i], 1, 3) == "add" then
+                parts = splitString(bytecode[i], ":")
+                if vars[parts[2]] ~= nil then
+                    vars[parts[2]] = vars[parts[2]] + parts[3]
+                else    
+                    print("operand 1 not var weweoeooeo muy no bueno")
+                end
+            elseif string.sub(bytecode[i], 1, 2) == "if" then
+                parts = splitString(bytecode[i], ":")
+                if vars[parts[2]] ~= nil then
+                    readNextLine = vars[parts[2]] == parts[3]
+                else    
+                    print("operand 1 not var weweoeooeo muy no bueno")
+                end
+            elseif string.sub(bytecode[i], 1, 3) == "nif" then
+                parts = splitString(bytecode[i], ":")
+                print("notif")
                 print(vars[parts[2]])
-            else
-                print(parts[2])
+                print(tonumber(parts[3]) or parts[3])
+                if vars[parts[2]] ~= nil then
+                    readNextLine = not (vars[parts[2]] == (tonumber(parts[3]) or parts[3]))
+                    if readNextLine then
+                        print("contine")
+                    else
+                        print("sad")
+                    end
+                else    
+                    print("operand 1 not var weweoeooeo muy no bueno")
+                end
             end
+        else
+            readNextLine = true
         end
     end
 end

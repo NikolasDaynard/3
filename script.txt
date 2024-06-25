@@ -1,4 +1,8 @@
-heloo = "hello"
+heloo = 2
+label:
 print(heloo)
-~ embed
+heloo = heloo + 1
+if heloo != 10
+goto label
+
 

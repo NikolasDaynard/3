@@ -9,8 +9,8 @@ function containsOperand(line)
     return string.find(line, "=") ~= nil
 end
 
-function encode(line)
-    line = promptUser(line)
+function encode(line, lineNum)
+    line = promptUser(line, lineNum)
 
     return line
 end

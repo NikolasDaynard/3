@@ -12,11 +12,11 @@ local lines = lines_from(file)
 local bytecode = {}
   
 for k,line in pairs(lines) do
-    -- print('line[' .. k .. ']', v)
-    table.insert(bytecode, encode(line))
+    table.insert(bytecode, encode(line, k))
 end
 
 for i = 1, #bytecode do
     print(bytecode[i])
 end
-interpret(bytecode)
+
+interpret(bytecode, 1)
